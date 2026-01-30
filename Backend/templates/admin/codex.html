@@ -1,42 +1,44 @@
 {% extends "admin/base.html" %}
 
-{% block content %}
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-    <h1>CodeX Events</h1>
-    <a href="{{ url_for('admin.add_codex') }}" class="btn btn-success">Add CodeX Event</a>
-</div>
+{% block title %}Codex Events - Admin{% endblock %}
 
-<div class="card">
-    <table>
-        <thead>
-            <tr>
-                <th>Month</th>
-                <th>Categories</th>
-                <th>Total Winners</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for codex in codex_events %}
-            <tr>
-                <td>{{ codex.month }}</td>
-                <td>{{ codex.categories|length }}</td>
-                <td>
-                    {% set total = namespace(count=0) %}
-                    {% for cat in codex.categories %}
-                        {% set total.count = total.count + cat.winners|length %}
-                    {% endfor %}
-                    {{ total.count }}
-                </td>
-                <td>
-                    <a href="{{ url_for('admin.edit_codex', month=codex.month) }}" class="btn btn-primary" style="padding: 5px 10px; font-size: 14px;">Edit</a>
-                    <form method="POST" action="{{ url_for('admin.delete_codex', month=codex.month) }}" style="display: inline;">
-                        <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 14px;" onclick="return confirm('Delete this CodeX event?')">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Codex Events</h2>
+        <a href="{{ url_for('admin.add_event') }}" class="btn btn-primary">Add New Codex Event</a>
+    </div>
+
+    {% if events %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Categories</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr>
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ event.codex_categories|length if event.codex_categories else 0 }}</td>
+                    <td>
+                        <a href="{{ url_for('admin.edit_event', event_id=event._id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form method="POST" action="{{ url_for('admin.delete_event', event_id=event._id) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>No Codex events found. <a href="{{ url_for('admin.add_event') }}">Add one now</a></p>
+    {% endif %}
 </div>
 {% endblock %}

@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<h1>Gallery: {{ event.title }}</h1>
+
+<div class="card">
+    <h3>Add Image</h3>
+    <form method="POST">
+        <input type="hidden" name="action" value="add">
+        <div class="form-group">
+            <label>Image URL *</label>
+            <input type="url" name="image_url" required>
+            <small style="color: #666;">Format: https://accesspicturescloud.vercel.app/events/{{ event.title|lower|replace(' ', '-') }}/image.jpg</small>
+        </div>
+        <div class="form-group">
+            <label>Caption (optional)</label>
+            <input type="text" name="caption">
+        </div>
+        <button type="submit" class="btn btn-success">Add Image</button>
+    </form>
+</div>
+
+<div class="card" style="margin-top: 20px;">
+    <h3>Current Gallery ({{ event.gallery|length }} images)</h3>
+    {% if event.gallery %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+        {% for img in event.gallery %}
+        <div style="border: 1px solid #ddd; padding: 10px; border-radius: 4px;">
+            <img src="{{ img.image_url }}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 4px;">
+            <p style="margin: 10px 0; font-size: 14px;">{{ img.caption or 'No caption' }}</p>
+            <form method="POST" style="margin: 0;">
+                <input type="hidden" name="action" value="remove">
+                <input type="hidden" name="image_url" value="{{ img.image_url }}">
+                <button type="submit" class="btn btn-danger" style="width: 100%; padding: 5px; font-size: 12px;" onclick="return confirm('Remove this image?')">Remove</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="margin-top: 15px; color: #666;">No images in gallery yet.</p>
+    {% endif %}
+</div>
+
+<a href="{{ url_for('admin.events') }}" class="btn btn-primary" style="margin-top: 20px;">Back to Events</a>
+{% endblock %}

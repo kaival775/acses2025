@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<h1>Admin Dashboard</h1>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px;">
+    <div class="card" style="text-align: center;">
+        <h3>Members</h3>
+        <p style="margin: 15px 0;">Manage team members</p>
+        <a href="{{ url_for('admin.members') }}" class="btn btn-primary">Manage</a>
+    </div>
+    <div class="card" style="text-align: center;">
+        <h3>Events</h3>
+        <p style="margin: 15px 0;">Manage general events</p>
+        <a href="{{ url_for('admin.events') }}" class="btn btn-primary">Manage</a>
+    </div>
+    <div class="card" style="text-align: center;">
+        <h3>CodeX</h3>
+        <p style="margin: 15px 0;">Manage monthly competitions</p>
+        <a href="{{ url_for('admin.codex') }}" class="btn btn-primary">Manage</a>
+    </div>
+</div>
+{% endblock %}

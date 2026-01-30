@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1>Members</h1>
+    <a href="{{ url_for('admin.add_member') }}" class="btn btn-success">Add Member</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td>{{ member.name }}</td>
+                <td>{{ member.position }}</td>
+                <td>{{ member.role_priority }}</td>
+                <td>{{ 'Active' if member.is_active else 'Inactive' }}</td>
+                <td>
+                    <a href="{{ url_for('admin.edit_member', member_id=member._id) }}" class="btn btn-primary" style="padding: 5px 10px; font-size: 14px;">Edit</a>
+                    <form method="POST" action="{{ url_for('admin.delete_member', member_id=member._id) }}" style="display: inline;">
+                        <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 14px;" onclick="return confirm('Delete this member?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

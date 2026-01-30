@@ -1,0 +1,86 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<h1>{{ 'Edit' if edit else 'Add' }} Member</h1>
+
+<div class="card">
+    <form method="POST" id="memberForm">
+        <div class="form-group">
+            <label>Name *</label>
+            <input type="text" name="name" value="{{ member.name if member else '' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Role *</label>
+            <input type="text" name="role" value="{{ member.role if member else '' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Member Type *</label>
+            <select name="member_type" id="memberType" required onchange="toggleDepartment()">
+                <option value="">Select Member Type</option>
+                <option value="faculty" {{ 'selected' if member and member.memberType == 'faculty' else '' }}>Faculty Coordinator</option>
+                <option value="super-core" {{ 'selected' if member and member.memberType == 'super-core' else '' }}>Super Core</option>
+                <option value="core" {{ 'selected' if member and member.memberType == 'core' else '' }}>Core</option>
+            </select>
+        </div>
+        
+        <div class="form-group" id="departmentGroup" style="display: none;">
+            <label>Department *</label>
+            <select name="department" id="department">
+                <option value="">Select Department</option>
+                <option value="Tech" {{ 'selected' if member and member.department == 'Tech' else '' }}>Tech</option>
+                <option value="Creatives" {{ 'selected' if member and member.department == 'Creatives' else '' }}>Creatives</option>
+                <option value="Events" {{ 'selected' if member and member.department == 'Events' else '' }}>Events</option>
+                <option value="Operations" {{ 'selected' if member and member.department == 'Operations' else '' }}>Operations</option>
+                <option value="Marketing" {{ 'selected' if member and member.department == 'Marketing' else '' }}>Marketing</option>
+                <option value="Public Relations" {{ 'selected' if member and member.department == 'Public Relations' else '' }}>Public Relations</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Image URL *</label>
+            <input type="url" name="image_url" value="{{ member.imageUrl if member else '' }}" required>
+            <small style="color: #666;">Format: https://acsespicscloud.vercel.app/members/FirstnameLastname.png</small>
+        </div>
+        
+        <div class="form-group">
+            <label>LinkedIn</label>
+            <input type="url" name="linkedin" value="{{ member.linkedin if member else '' }}">
+        </div>
+        
+        <div class="form-group">
+            <label>GitHub</label>
+            <input type="url" name="github" value="{{ member.github if member else '' }}">
+        </div>
+        
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" value="{{ member.email if member else '' }}">
+        </div>
+        
+        <button type="submit" class="btn btn-success">{{ 'Update' if edit else 'Create' }}</button>
+        <a href="{{ url_for('admin.members') }}" class="btn btn-danger">Cancel</a>
+    </form>
+</div>
+
+<script>
+function toggleDepartment() {
+    const memberType = document.getElementById('memberType').value;
+    const deptGroup = document.getElementById('departmentGroup');
+    const deptSelect = document.getElementById('department');
+    
+    if (memberType === 'core') {
+        deptGroup.style.display = 'block';
+        deptSelect.required = true;
+    } else {
+        deptGroup.style.display = 'none';
+        deptSelect.required = false;
+        deptSelect.value = '';
+    }
+}
+
+// Run on page load
+document.addEventListener('DOMContentLoaded', toggleDepartment);
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1>Events</h1>
+    <a href="{{ url_for('admin.add_event') }}" class="btn btn-success">Add Event</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Gallery</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr>
+                <td>{{ event.title }}</td>
+                <td>{{ event.date.strftime('%Y-%m-%d') }}</td>
+                <td>{{ event.event_type }}</td>
+                <td>{{ event.gallery|length }} images</td>
+                <td>
+                    <a href="{{ url_for('admin.edit_event', event_id=event._id) }}" class="btn btn-primary" style="padding: 5px 10px; font-size: 14px;">Edit</a>
+                    <a href="{{ url_for('admin.manage_gallery', event_id=event._id) }}" class="btn btn-success" style="padding: 5px 10px; font-size: 14px;">Gallery</a>
+                    <form method="POST" action="{{ url_for('admin.delete_event', event_id=event._id) }}" style="display: inline;">
+                        <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 14px;" onclick="return confirm('Delete this event?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<h1>{{ 'Edit' if edit else 'Add' }} CodeX Event</h1>
+
+<div class="card">
+    <form method="POST" id="codexForm">
+        <div class="form-group">
+            <label>Month (YYYY-MM) *</label>
+            <input type="month" name="month" value="{{ codex.month if codex else '' }}" required {{ 'readonly' if edit else '' }}>
+        </div>
+        
+        <h3 style="margin-top: 30px;">Categories</h3>
+        <div id="categoriesContainer">
+            {% if codex %}
+                {% for category in codex.categories %}
+                <div class="category-block" style="border: 2px solid #ddd; padding: 15px; margin: 15px 0; border-radius: 4px;">
+                    <label>Category Name *</label>
+                    <input type="text" name="category_{{ loop.index0 }}_name" value="{{ category.category_name }}" required>
+                    
+                    <h4 style="margin-top: 15px;">Winners</h4>
+                    <div class="winners-container">
+                        {% for winner in category.winners %}
+                        <div style="background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 4px;">
+                            <label>Name *</label>
+                            <input type="text" name="category_{{ loop.index0 }}_winner_{{ loop.index0 }}_name" value="{{ winner.name }}" required>
+                            <label>Rank *</label>
+                            <input type="number" name="category_{{ loop.index0 }}_winner_{{ loop.index0 }}_rank" value="{{ winner.rank }}" required>
+                            <label>Photo URL *</label>
+                            <input type="url" name="category_{{ loop.index0 }}_winner_{{ loop.index0 }}_photo" value="{{ winner.photo_url }}" required>
+                        </div>
+                        {% endfor %}
+                        <input type="hidden" name="category_{{ loop.index0 }}_winner_count" value="{{ category.winners|length }}">
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="category-block" style="border: 2px solid #ddd; padding: 15px; margin: 15px 0; border-radius: 4px;">
+                    <label>Category Name *</label>
+                    <input type="text" name="category_0_name" required>
+                    
+                    <h4 style="margin-top: 15px;">Winners</h4>
+                    <div class="winners-container">
+                        {% for i in range(3) %}
+                        <div style="background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 4px;">
+                            <label>Winner {{ i+1 }} Name *</label>
+                            <input type="text" name="category_0_winner_{{ i }}_name" required>
+                            <label>Rank *</label>
+                            <input type="number" name="category_0_winner_{{ i }}_rank" value="{{ i+1 }}" required>
+                            <label>Photo URL *</label>
+                            <input type="url" name="category_0_winner_{{ i }}_photo" required>
+                            <small style="color: #666;">Format: https://accesspicturescloud.vercel.app/codex/YYYY-MM/category/winner.jpg</small>
+                        </div>
+                        {% endfor %}
+                        <input type="hidden" name="category_0_winner_count" value="3">
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        
+        <input type="hidden" name="category_count" value="{{ codex.categories|length if codex else 1 }}">
+        
+        <button type="submit" class="btn btn-success">{{ 'Update' if edit else 'Create' }}</button>
+        <a href="{{ url_for('admin.codex') }}" class="btn btn-danger">Cancel</a>
+    </form>
+</div>
+
+<script>
+// Note: For production, you'd add JavaScript to dynamically add/remove categories and winners
+// This template provides the basic structure
+</script>
+{% endblock %}

@@ -53,6 +53,45 @@ core_team = {
     ]
 }
 
+# Sample Events
+events = [
+    {
+        "title": "Tech Workshop 2024",
+        "description": "Annual technical workshop covering latest technologies",
+        "date": datetime(2024, 3, 15),
+        "event_type": "general",
+        "cover_image": "https://acsespicscloud.vercel.app/events/test/cover.jpg",
+        "event_photos": [],
+        "winners": []
+    },
+    {
+        "title": "CodeX October 2024",
+        "description": "Monthly coding competition",
+        "date": datetime(2024, 10, 20),
+        "event_type": "codex",
+        "cover_image": "https://acsespicscloud.vercel.app/codex/oct/cover.jpg",
+        "codex_categories": [
+            {"category_name": "Web Development", "winners": []},
+            {"category_name": "Data Structures", "winners": []}
+        ],
+        "event_photos": [],
+        "winners": []
+    },
+    {
+        "title": "CodeX November 2024",
+        "description": "Monthly coding competition",
+        "date": datetime(2024, 11, 20),
+        "event_type": "codex",
+        "cover_image": "https://acsespicscloud.vercel.app/codex/nov/cover.jpg",
+        "codex_categories": [
+            {"category_name": "Algorithms", "winners": []},
+            {"category_name": "Problem Solving", "winners": []}
+        ],
+        "event_photos": [],
+        "winners": []
+    }
+]
+
 @seed_bp.route('/run', methods=['POST'])
 def seed_database():
     from flask import current_app
@@ -64,11 +103,13 @@ def seed_database():
     
     try:
         member_model = current_app.member_model
+        event_model = current_app.event_model
         
-        # Clear existing members
+        # Clear existing data
         member_model.collection.delete_many({})
+        event_model.collection.delete_many({})
         
-        total = 0
+        total_members = 0
         
         # Insert Faculty
         for member in faculty:
@@ -76,7 +117,7 @@ def seed_database():
                 member["name"], member["imageUrl"], member["role"], 
                 "faculty", None, None, None, None
             )
-            total += 1
+            total_members += 1
         
         # Insert Super Core
         for member in super_core:
@@ -84,7 +125,7 @@ def seed_database():
                 member["name"], member["imageUrl"], member["role"],
                 "super-core", None, None, None, None
             )
-            total += 1
+            total_members += 1
         
         # Insert Core Team
         for department, members in core_team.items():
@@ -93,12 +134,29 @@ def seed_database():
                     member["name"], member["imageUrl"], department,
                     "core", department, None, None, None
                 )
-                total += 1
+                total_members += 1
+        
+        # Insert Events
+        total_events = 0
+        for event in events:
+            event_model.create(
+                event["title"],
+                event["description"],
+                event["date"],
+                event["event_type"],
+                event["cover_image"],
+                None,
+                event.get("codex_categories"),
+                event.get("event_photos", []),
+                event.get("winners", [])
+            )
+            total_events += 1
         
         return jsonify({
             "success": True,
             "message": "Database seeded successfully",
-            "total_members": total
+            "total_members": total_members,
+            "total_events": total_events
         })
     
     except Exception as e:

@@ -7,7 +7,7 @@ interface LoaderProps {
 
 export default function Loader({ onComplete }: LoaderProps) {
   const loaderRef = useRef<HTMLDivElement>(null);
-  const maskGroupRef = useRef<SVGGElement>(null);
+  const maskGroupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const tl = gsap.timeline({

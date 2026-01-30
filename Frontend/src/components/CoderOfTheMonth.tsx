@@ -12,7 +12,7 @@ export default function CoderOfTheMonth() {
     api.getLatestCodeX()
       .then(data => {
         setCodexData(data);
-        setVisibleCategories(new Array(data.categories.length).fill(false));
+        setVisibleCategories(new Array(data.codex_categories?.length || 0).fill(false));
         setLoading(false);
       })
       .catch(err => {
@@ -94,7 +94,7 @@ export default function CoderOfTheMonth() {
         </div>
 
         <div className="space-y-16">
-          {codexData.categories.map((category, catIndex) => (
+          {codexData.codex_categories?.map((category: any, catIndex: number) => (
             <div
               key={catIndex}
               className={`category-item transition-all duration-1000 ease-out ${visibleCategories[catIndex] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
@@ -105,7 +105,7 @@ export default function CoderOfTheMonth() {
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                {category.winners.map((winner, winIndex) => (
+                {category.winners.map((winner: any, winIndex: number) => (
                   <div
                     key={winIndex}
                     className="comic-panel group relative"

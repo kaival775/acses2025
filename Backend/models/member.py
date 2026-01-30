@@ -18,7 +18,7 @@ class Member:
             "name": name,
             "imageUrl": image_url,
             "role": role,
-            "memberType": member_type,  # faculty, super-core, core
+            "memberType": member_type,  # founder, faculty, super-core, core
             "department": department,  # Only for core members
             "linkedin": linkedin,
             "github": github,

@@ -19,6 +19,7 @@
             <label>Member Type *</label>
             <select name="member_type" id="memberType" required onchange="toggleDepartment()">
                 <option value="">Select Member Type</option>
+                <option value="founder" {{ 'selected' if member and member.memberType == 'founder' else '' }}>Founder</option>
                 <option value="faculty" {{ 'selected' if member and member.memberType == 'faculty' else '' }}>Faculty Coordinator</option>
                 <option value="super-core" {{ 'selected' if member and member.memberType == 'super-core' else '' }}>Super Core</option>
                 <option value="core" {{ 'selected' if member and member.memberType == 'core' else '' }}>Core</option>

@@ -7,7 +7,7 @@ export type Member = {
   name: string;
   imageUrl: string;
   role: string;
-  memberType: string;  // faculty, super-core, core
+  memberType: string;  // founder, faculty, super-core, core
   department?: string;  // Only for core members
   linkedin?: string;
   github?: string;

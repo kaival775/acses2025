@@ -4,6 +4,7 @@ import type { Member } from '../services/api';
 import { api } from '../services/api';
 
 export default function Team() {
+  const [founderMember, setFounderMember] = useState<Member | null>(null);
   const [facultyMembers, setFacultyMembers] = useState<Member[]>([]);
   const [superCoreMembers, setSuperCoreMembers] = useState<Member[]>([]);
   const [coreDepts, setCoreDepts] = useState<Array<{department: string, members: Member[]}>>([]);
@@ -11,11 +12,13 @@ export default function Team() {
 
   useEffect(() => {
     Promise.all([
+      api.getMembers('founder'),
       api.getMembers('faculty'),
       api.getMembers('super-core'),
       api.getMembersByDepartment()
     ])
-      .then(([faculty, superCore, depts]) => {
+      .then(([founder, faculty, superCore, depts]) => {
+        setFounderMember(founder[0] || null);
         setFacultyMembers(faculty);
         setSuperCoreMembers(superCore);
         const deptOrder = ['Tech', 'Creatives', 'Events', 'Operations', 'Public Relations', 'Marketing'];
@@ -87,6 +90,25 @@ export default function Team() {
             [TEAM]
           </h1>
         </div>
+
+        {founderMember && (
+          <div className="mb-16">
+            <div className="flex items-center justify-center mb-8 sm:mb-12">
+              <div className="flex-1 h-px hidden sm:block" style={{ background: 'linear-gradient(to right, transparent, rgba(139, 26, 26, 0.3), rgba(139, 26, 26, 0.3))' }}></div>
+              <h3 className="text-xl sm:text-2xl font-bold px-4 sm:px-8 tracking-[0.15em] sm:tracking-[0.2em] font-vengeance"
+                style={{
+                  color: '#8b1a1a',
+                  textShadow: '2px 2px 0px rgba(0, 0, 0, 0.8), 0 0 15px rgba(139, 26, 26, 0.4)'
+                }}>
+                FOUNDER
+              </h3>
+              <div className="flex-1 h-px hidden sm:block" style={{ background: 'linear-gradient(to left, transparent, rgba(139, 26, 26, 0.3), rgba(139, 26, 26, 0.3))' }}></div>
+            </div>
+            <div className="flex justify-center">
+              <MemberCard member={founderMember} />
+            </div>
+          </div>
+        )}
 
         {facultyMembers.length > 0 && (
           <div className="mb-16">

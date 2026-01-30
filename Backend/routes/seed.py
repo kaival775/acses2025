@@ -3,6 +3,9 @@ from datetime import datetime
 
 seed_bp = Blueprint('seed', __name__, url_prefix='/seed')
 
+# Founder
+founder = {"name": "Founder Name", "role": "Founder", "imageUrl": "https://acsespicscloud.vercel.app/members/founder.png"}
+
 # Faculty Coordinators
 faculty = [
     {"name": "Dr. Dhananjay Kalbande", "role": "Faculty Coordinator", "imageUrl": "https://acsespicscloud.vercel.app/members/Drk.jpg"},
@@ -110,6 +113,13 @@ def seed_database():
         event_model.collection.delete_many({})
         
         total_members = 0
+        
+        # Insert Founder
+        member_model.create(
+            founder["name"], founder["imageUrl"], founder["role"],
+            "founder", None, None, None, None
+        )
+        total_members += 1
         
         # Insert Faculty
         for member in faculty:

@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from config import Config
 from routes.api import api_bp
 from routes.admin import admin_bp
+from routes.seed import seed_bp
 from models.member import Member
 from models.event import Event
 from services.image_validator import ImageValidator
@@ -49,6 +50,7 @@ def create_app():
     # Register blueprints
     app.register_blueprint(api_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(seed_bp)
     
     @app.route('/')
     def index():

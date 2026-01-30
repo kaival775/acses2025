@@ -293,11 +293,3 @@ def delete_event(event_id):
     event_model.delete(event_id)
     flash('Event deleted successfully', 'success')
     return redirect(url_for('admin.events'))
-
-# CODEX MANAGEMENT
-@admin_bp.route('/codex')
-@admin_required
-def codex():
-    event_model = current_app.event_model
-    codex_events = event_model.get_by_type('codex')
-    return render_template('admin/codex.html', events=codex_events)

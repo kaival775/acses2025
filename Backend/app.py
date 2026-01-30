@@ -7,6 +7,7 @@ from routes.admin import admin_bp
 from models.member import Member
 from models.event import Event
 from services.image_validator import ImageValidator
+import os
 
 def create_app():
     app = Flask(__name__)
@@ -27,16 +28,23 @@ def create_app():
         }
     })
     
-    # MongoDB connection
-    client = MongoClient(app.config['MONGO_URI'])
-    db = client.get_default_database()
-    
-    # Initialize models
-    app.member_model = Member(db)
-    app.event_model = Event(db)
-    
-    # Initialize services
-    app.image_validator = ImageValidator(app.config)
+    # MongoDB connection with error handling
+    try:
+        mongo_uri = app.config['MONGO_URI']
+        client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
+        # Test connection
+        client.server_info()
+        db = client.get_default_database()
+        
+        # Initialize models
+        app.member_model = Member(db)
+        app.event_model = Event(db)
+        
+        # Initialize services
+        app.image_validator = ImageValidator(app.config)
+    except Exception as e:
+        print(f"MongoDB connection error: {e}")
+        # Continue without DB for health check
     
     # Register blueprints
     app.register_blueprint(api_bp)
@@ -44,13 +52,15 @@ def create_app():
     
     @app.route('/')
     def index():
-        return {"message": "ACSES Backend API", "status": "running"}
+        return {"message": "ACSES Backend API", "status": "running", "version": "1.0"}
+    
+    @app.route('/health')
+    def health():
+        return {"status": "ok"}
     
     return app
 
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     app.run(debug=True, host='0.0.0.0', port=5000)
-else:
-    # For Vercel
-    app = create_app()

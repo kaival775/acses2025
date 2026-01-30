@@ -1,9 +1,13 @@
 import os
 from datetime import timedelta
+from dotenv import load_dotenv
+
+# Load .env file if it exists (for local development)
+load_dotenv()
 
 class Config:
-    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-change-in-production')
-    MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/acses_db')
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-change-in-production')
+    MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://localhost:27017/acses_db')
     
     # Session config
     PERMANENT_SESSION_LIFETIME = timedelta(hours=24)

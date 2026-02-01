@@ -3,8 +3,10 @@ import Footer from '../components/Footer';
 
 export default function Contacts() {
   const developers = [
-    { name: "Swaraj Panmand", position: "Lead Developer" },
-    { name: "Kaivalya Sonawane", position: "Site Developer" },
+    { name: "Swaraj Panmand", position: "Lead Developer", linkedin: "https://www.linkedin.com/in/swaraj-panmand-734629248/", instagram: "swaraj_313" },
+    { name: "Aryan Ahuja", position: "Lead Developer", linkedin: "https://www.linkedin.com/in/aryan-ahuja-4b9430263/", instagram: "acses.spit" },
+    { name: "Kaivalya Sonawane", position: "Site Developer", linkedin: "https://www.linkedin.com/in/kaivalya-sonawane/", instagram: "kaivalya.07" },
+    { name: "Harsh Patil", position: "Site Developer", linkedin: "https://www.linkedin.com/in/harshpatil13/", instagram: "harsh_patil1302" }
   ];
 
   return (
@@ -256,6 +258,61 @@ export default function Contacts() {
                   onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(139, 26, 26, 0.8)'}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(139, 26, 26, 0.5)'}></div>
                 <p className="text-xs font-vengeance tracking-[0.15em] uppercase relative z-10" style={{ color: '#8b1a1a' }}>{member.position}</p>
+                <div className="flex justify-center gap-4 mt-4 relative z-10">
+                  {/* LinkedIn */}
+                  <a
+                    href={member.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300"
+                    style={{
+                      background: 'radial-gradient(circle, rgba(139,26,26,0.35), rgba(0,0,0,0.9))',
+                      border: '2px solid rgba(139,26,26,0.5)',
+                      boxShadow: '0 0 10px rgba(139,26,26,0.35)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.15)';
+                      e.currentTarget.style.boxShadow = '0 0 18px rgba(139,26,26,0.6)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.boxShadow = '0 0 10px rgba(139,26,26,0.35)';
+                    }}
+                  >
+                    <span className="font-bold text-sm" style={{ color: '#8b1a1a' }}>in</span>
+                  </a>
+
+                  {/* Instagram */}
+                  <a
+                    href={`https://www.instagram.com/${member.instagram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300"
+                    style={{
+                      background: 'radial-gradient(circle, rgba(139,26,26,0.35), rgba(0,0,0,0.9))',
+                      border: '2px solid rgba(139,26,26,0.5)',
+                      boxShadow: '0 0 10px rgba(139,26,26,0.35)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.15)';
+                      e.currentTarget.style.boxShadow = '0 0 18px rgba(139,26,26,0.6)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.boxShadow = '0 0 10px rgba(139,26,26,0.35)';
+                    }}
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      style={{ color: '#8b1a1a' }}
+                    >
+                      <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm5.25-2.25a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                    </svg>
+                  </a>
+                </div>
+
               </div>
             ))}
           </div>

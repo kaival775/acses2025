@@ -100,12 +100,14 @@ export default function Team() {
                   color: '#8b1a1a',
                   textShadow: '2px 2px 0px rgba(0, 0, 0, 0.8), 0 0 15px rgba(139, 26, 26, 0.4)'
                 }}>
-                FOUNDER
+                HOD
               </h3>
               <div className="flex-1 h-px hidden sm:block" style={{ background: 'linear-gradient(to left, transparent, rgba(139, 26, 26, 0.3), rgba(139, 26, 26, 0.3))' }}></div>
             </div>
             <div className="flex justify-center">
-              <MemberCard member={founderMember} />
+              <div className="w-full max-w-xs">
+                <MemberCard member={founderMember} />
+              </div>
             </div>
           </div>
         )}

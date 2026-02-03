@@ -50,7 +50,13 @@ export default function BatmanLanding() {
         }`}
         onWheel={() => setIsScrolled(true)}
       >
-        <div className="absolute md:top-35 right-35 md:right-70 inset-0 pointer-events-none md:scale-[180%] scale-[350%]" >
+        <div 
+          className="absolute inset-0 pointer-events-none left-[-40%] scale-[200%] md:left-[55%] md:top-[15%] md:scale-[180%]"
+          style={{
+            left: window.innerWidth >= 768 ? '50%' : undefined,
+            transform: window.innerWidth >= 768 ? 'translateX(-50%) scale(1.8)' : undefined
+          }}
+        >
           <LaserFlow color="#8b1a1a" />
         </div>
             

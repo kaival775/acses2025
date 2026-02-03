@@ -51,7 +51,7 @@ export default function BatmanLanding() {
         onWheel={() => setIsScrolled(true)}
       >
         <div 
-          className="absolute inset-0 pointer-events-none left-[-40%] scale-[200%] md:left-[55%] md:top-[15%] md:scale-[180%]"
+          className="absolute inset-0 pointer-events-none left-[-40%] scale-[200%] md:left-[57%] md:top-[10%] md:scale-[180%]"
           style={{
             // left: window.innerWidth >= 768 ? '50%' : undefined,
             transform: window.innerWidth >= 768 ? 'translateX(-50%) scale(1.8)' : undefined

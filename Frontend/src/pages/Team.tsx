@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
+import LoadingSpinner from '../components/LoadingSpinner';
 import type { Member } from '../services/api';
 import { api } from '../services/api';
 
@@ -34,8 +35,8 @@ export default function Team() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-xl">Loading team...</div>
+      <div className="min-h-screen bg-black pt-20">
+        <LoadingSpinner />
       </div>
     );
   }

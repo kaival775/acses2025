@@ -1,7 +1,39 @@
 // import React from 'react';
+import { useState } from 'react';
 import Footer from '../components/Footer';
 
 export default function Contacts() {
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('sending');
+    setErrorMsg('');
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setTimeout(() => setStatus('idle'), 5000);
+      } else {
+        const data = await response.json();
+        setErrorMsg(data.error || 'Failed to send message');
+        setStatus('error');
+      }
+    } catch (error) {
+      setErrorMsg('Network error. Please try again.');
+      setStatus('error');
+    }
+  };
+
   const developers = [
     { name: "Swaraj Panmand", position: "Lead Developer", linkedin: "https://www.linkedin.com/in/swaraj-panmand-734629248/", instagram: "swaraj_313" },
     { name: "Aryan Ahuja", position: "Lead Developer", linkedin: "https://www.linkedin.com/in/aryan-ahuja-4b9430263/", instagram: "acses.spit" },
@@ -20,7 +52,7 @@ export default function Contacts() {
         <div className="space-y-4 sm:space-y-6">
           {/* LinkedIn */}
           <a
-            href="https://www.linkedin.com/company/itsa-s-p-i-t/"
+            href="https://www.linkedin.com/showcase/112010962/admin?lipi=urn%3Ali%3Apage%3Ad_flagship3_showcase_admin%3BZ2hzPJtfQ3aOImnr08bIxg%3D%3D"
             target="_blank"
             rel="noopener noreferrer"
             className="block comic-panel ink-bleed bg-black/60 backdrop-blur-sm border-2 p-6 sm:p-8 transition-all duration-500 hover:shadow-xl hover:-translate-y-1 group batman-quote"
@@ -189,6 +221,95 @@ export default function Contacts() {
               </svg>
             </div>
           </a>
+        </div>
+
+        {/* Email Contact Form */}
+        <div className="mt-16 sm:mt-20">
+          <div className="flex items-center justify-center mb-8 sm:mb-12">
+            <div className="flex-1 h-px hidden sm:block" style={{ background: 'linear-gradient(to right, transparent, rgba(139, 26, 26, 0.3), rgba(139, 26, 26, 0.3))' }}></div>
+            <h3 className="text-xl sm:text-5xl px-4 sm:px-8 font-batman"
+              style={{ color: '#8b1a1a' }}>
+              (EMAILUS)
+            </h3>
+            <div className="flex-1 h-px hidden sm:block" style={{ background: 'linear-gradient(to left, transparent, rgba(139, 26, 26, 0.3), rgba(139, 26, 26, 0.3))' }}></div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="max-w-2xl mx-auto comic-panel ink-bleed bg-black/60 backdrop-blur-sm border-2 p-6 sm:p-8"
+            style={{
+              borderColor: 'rgba(139, 26, 26, 0.4)',
+              boxShadow: 'inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(139, 26, 26, 0.2)'
+            }}>
+            <div className="space-y-4">
+              <div>
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                  className="w-full bg-black/40 border-2 px-4 py-3 font-mythology text-sm focus:outline-none focus:border-[#8b1a1a] transition-colors"
+                  style={{ borderColor: 'rgba(139, 26, 26, 0.3)', color: '#d4d4c4' }}
+                />
+              </div>
+              <div>
+                <input
+                  type="email"
+                  placeholder="Your Email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  className="w-full bg-black/40 border-2 px-4 py-3 font-mythology text-sm focus:outline-none focus:border-[#8b1a1a] transition-colors"
+                  style={{ borderColor: 'rgba(139, 26, 26, 0.3)', color: '#d4d4c4' }}
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Subject"
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  required
+                  className="w-full bg-black/40 border-2 px-4 py-3 font-mythology text-sm focus:outline-none focus:border-[#8b1a1a] transition-colors"
+                  style={{ borderColor: 'rgba(139, 26, 26, 0.3)', color: '#d4d4c4' }}
+                />
+              </div>
+              <div>
+                <textarea
+                  placeholder="Your Message"
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  required
+                  rows={5}
+                  className="w-full bg-black/40 border-2 px-4 py-3 font-mythology text-sm focus:outline-none focus:border-[#8b1a1a] transition-colors resize-none"
+                  style={{ borderColor: 'rgba(139, 26, 26, 0.3)', color: '#d4d4c4' }}
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={status === 'sending'}
+                className="w-full py-3 font-vengeance text-lg uppercase tracking-wider transition-all duration-300 disabled:opacity-50"
+                style={{
+                  backgroundColor: status === 'sending' ? 'rgba(139, 26, 26, 0.3)' : '#8b1a1a',
+                  color: 'white',
+                  boxShadow: '0 0 15px rgba(139, 26, 26, 0.4)'
+                }}
+                onMouseEnter={(e) => !status && (e.currentTarget.style.boxShadow = '0 0 25px rgba(139, 26, 26, 0.6)')}
+                onMouseLeave={(e) => !status && (e.currentTarget.style.boxShadow = '0 0 15px rgba(139, 26, 26, 0.4)')}
+              >
+                {status === 'sending' ? 'SENDING...' : 'SEND MESSAGE'}
+              </button>
+              {status === 'success' && (
+                <div className="text-center font-mythology text-sm" style={{ color: '#8b1a1a' }}>
+                  Message sent successfully!
+                </div>
+              )}
+              {status === 'error' && (
+                <div className="text-center font-mythology text-sm" style={{ color: '#8b1a1a' }}>
+                  {errorMsg}
+                </div>
+              )}
+            </div>
+          </form>
         </div>
 
         {/* Developers Section - Neo-Noir Styled */}

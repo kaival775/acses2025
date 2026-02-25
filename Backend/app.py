@@ -5,6 +5,7 @@ from config import Config
 from routes.api import api_bp
 from routes.admin import admin_bp
 from routes.seed import seed_bp
+from routes.contact import contact_bp
 from models.member import Member
 from models.event import Event
 from services.image_validator import ImageValidator
@@ -21,7 +22,11 @@ def create_app():
                 "http://localhost:5173",
                 "http://localhost:3000",
                 "http://127.0.0.1:5173",
-                "https://acses2k25.vercel.app"
+                "https://acses2k25.vercel.app",
+                "https://acses.spit.ac.in",
+                "https://www.acses.spit.ac.in",
+                "http://acses.spit.ac.in",
+                "http://www.acses.spit.ac.in"
             ],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type"],
@@ -51,6 +56,7 @@ def create_app():
     app.register_blueprint(api_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(seed_bp)
+    app.register_blueprint(contact_bp, url_prefix='/api')
     
     @app.route('/')
     def index():

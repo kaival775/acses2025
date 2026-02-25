@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
+import LoadingSpinner from '../components/LoadingSpinner';
 import type { Event } from '../services/api';
 import { api } from '../services/api';
 
@@ -37,12 +38,12 @@ export default function Events() {
   const currentEvent = events.find(e => e._id === selectedEvent);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-xl">Loading events...</div>
-      </div>
-    );
-  }
+  return (
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <LoadingSpinner />
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-black pt-20 relative">
